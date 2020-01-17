@@ -1,0 +1,57 @@
+interface canFly{
+  isFlyCapable:()=>void
+}
+
+class Animal {
+  public name:string;
+  private flyInstance:canFly; // using composition s dependency can be changed dynamically at run time
+  constructor(name:string) {
+    this.name = name;
+    this.flyInstance={
+      isFlyCapable:():void=>{}
+    }
+  }
+  print():void {
+    console.log(this.name);
+  }
+
+  set flyInstanceValue(instance:canFly){
+    this.flyInstance=instance
+  }
+
+  isFlyCapable1():void{
+    this.flyInstance.isFlyCapable();
+  }
+}
+
+
+class CanFlyAnimal implements canFly{
+  isFlyCapable(){
+    console.log('I can Fly....')
+  }
+}
+
+class CantFlyAnimal implements canFly{
+  isFlyCapable(){
+    console.log('I can not Fly....')
+  }
+}
+
+class Dog extends Animal {
+  constructor(name:string) {
+    super(name);
+    this.flyInstanceValue=new CantFlyAnimal()  // changing deendency dynamically as explained above
+  }
+
+}
+
+class Bird extends Animal {
+  constructor(name:string) {
+    super(name);
+    this.flyInstanceValue=new CanFlyAnimal() // changing deendency dynamically as explained above
+  }
+}
+let dog1 = new Dog("json");
+let bird1 = new Bird("tweeti");
+dog1.isFlyCapable1();
+bird1.isFlyCapable1();
